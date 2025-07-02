@@ -22,7 +22,7 @@ public interface ClazzService {
      * 根据ID删除班级
      * @param id
      */
-    void delete(Integer id);
+    void deleteById(Integer id);
 
     /**
      * 新增班级

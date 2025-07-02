@@ -34,7 +34,7 @@ public class ClazzController {
     public Result deleteById(@PathVariable Integer id) {
         log.info("删除班级：{}", id);
         // 调用Service 层
-        clazzService.delete(id);
+        clazzService.deleteById(id);
         return Result.success();
     }
 

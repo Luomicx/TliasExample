@@ -6,6 +6,7 @@ package com.itheima.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.itheima.exception.BusinessException;
 import com.itheima.mapper.ClazzMapper;
 import com.itheima.mapper.StudentMapper;
 import com.itheima.pojo.Clazz;
@@ -44,10 +45,14 @@ public class ClazzServiceImpl  implements ClazzService {
      * @param id
      */
     @Override
-    public void delete(Integer id) {
+    public void deleteById(Integer id) {
+        //1. 查询班级下是否有学员
+        Integer count = studentMapper.countByClazzId(id);
+        if(count > 0){
+            throw new BusinessException("班级下有学员, 不能直接删除~");
+        }
+        //2. 如果没有, 再删除班级信息
         clazzMapper.deleteById(id);
-        // 删除对应班级的学生，保证数据完整性
-        studentMapper.deleteByClaId(id);
     }
 
     @Override
