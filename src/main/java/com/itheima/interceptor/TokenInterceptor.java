@@ -4,7 +4,9 @@
  */
 package com.itheima.interceptor;
 
+import com.itheima.util.CurrentHolder;
 import com.itheima.util.JwtUtils;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +37,10 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         // 如果token存在，校验令牌，失败返回错误信息
         try {
-            JwtUtils.parseJWT(token);
+            Claims claims = JwtUtils.parseJWT(token);
+            Integer empId = Integer.valueOf(claims.get("id").toString());
+            CurrentHolder.setCurrentId(empId);
+            log.info("当前登录员工ID：{}", empId);
         } catch (Exception e) {
             log.info("令牌为空，响应401");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
